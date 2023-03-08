@@ -24,8 +24,8 @@ class Scanner {
         this.source = source;
     }
 
-    public List<Token> scanTokens() {
-        while (!isAtEnd()) {
+    public List<Token> scanTokens() {;
+        while (!isEOF()) {
             // We are at the beginning of the next lexeme.
             start = current;
             scanToken();
@@ -35,12 +35,13 @@ class Scanner {
         return tokens;
     }
 
-    private boolean isAtEnd() {
+    private boolean isEOF() {
         return current >= source.length();
     }
 
     private void scanToken() {
-        char c = advance();
+        char c = getCurrentChar();
+        current++;
         currentChar = c;
         switch (c) {
             case '(': addToken(TokenType.LEFT_PARENTHESIS); break;
@@ -54,101 +55,98 @@ class Scanner {
             case ';': addToken(TokenType.SEMICOLON); break;
             case '*': addToken(TokenType.STAR); break;
             case ':':addToken(TokenType.COLON);break;
-            case '!': addToken(match('=') ? TokenType.BANG_EQUAL : TokenType.BANG); break;
+//            case '!': addToken(match('=') ? TokenType.BANG_EQUAL : TokenType.BANG); break;
             case '=': addToken(match('=') ? TokenType.EQUAL_EQUAL : TokenType.EQUAL); break;
-            case '<': addToken(match('=') ? TokenType.LESS_EQUAL : TokenType.LESS); break;
-            case '>': addToken(match('=') ? TokenType.GREATER_EQUAL : TokenType.GREATER); break;
-            case '/':
-                if (match('/')) {
-                    // A comment goes until the end of the line.
-                    while (peek() != '\n' && !isAtEnd()) advance();
-                } else {
-                    addToken(TokenType.SLASH);
-                }
-                break;
+//            case '<': addToken(match('=') ? TokenType.LESS_EQUAL : TokenType.LESS); break;
+//            case '>': addToken(match('=') ? TokenType.GREATER_EQUAL : TokenType.GREATER); break;
+//            case '/':
+//                if (match('/')) {
+//                    // A comment goes until the end of the line.
+//                    while (getCurrentChar() != '\n' && !isEOF()) current++;
+//                } else {
+//                    addToken(TokenType.SLASH);
+//                }
+//                break;
             case ' ':
             case '\r':
             case '\t':                // Ignore whitespace.                break;
             case '\n':  line++; break;
             case '"': string(); break;
-            case 'o':
-                if (match('r')) {
-                    addToken(TokenType.OR);
-                }
-                break;
             default:
                 if (isDigit(c)) {
-                    number();
-                } else if (isAlpha(c)){
-                    identifier();
+                    processNumber();
+                } else if (isLetter(c)){
+                    processAlphabetic();
                 } else {
                     System.err.println(line + "Unexpected character.");
                 }
         }
     }
-    private void identifier() {
-        while (isAlphaNumeric(peek()))
-            advance();
+    private void processAlphabetic() {
+        while (isLetterNumeric(getCurrentChar()))
+            current++;
         String text = source.substring(start, current);
         TokenType type = keywords.get(text);
-        if (type == null) type = TokenType.IDENTIFIER;
+        if (type == null) {
+            type = TokenType.IDENTIFIER;
+        }
         addToken(type);
 
     }
-    private void number() {
-        while (isDigit(peek()))
-            advance();
-
-        // Look for a fractional part.
-        if (peek() == '.' && isDigit(peekNext())) {
-            // Consume the "."
-            advance();
-
-            while (isDigit(peek()))
-                advance();
+    private void processNumber() {
+        currentChar = getCurrentChar();
+        while (isDigit(currentChar)){
+            current++;
+            currentChar = getCurrentChar();
         }
 
-        addToken(TokenType.NUMBER,
+        // Look for a fractional part.
+        if (getCurrentChar() == '.' && isDigit(getCurrentCharNext())) {
+            // Consume the "."
+            current++;
+
+            while (isDigit(getCurrentChar()))
+                current++;
+        }
+
+        addToken(TokenType.IDENTIFIER,
                 Double.parseDouble(source.substring(start, current)));
     }
-    private char peekNext() {
+    private char getCurrentCharNext() {
         if (current + 1 >= source.length()) return '\0';
         return source.charAt(current + 1);
     }
     private void string() {
-        while (peek() != '"' && !isAtEnd()) {
-            if (peek() == '\n') line++;
-            advance();
+        while (getCurrentChar() != '"' && !isEOF()) {
+            if (getCurrentChar() == '\n') line++;
+            current++;
         }
 
-        if (isAtEnd()) {
+        if (isEOF()) {
             System.out.println(line + "Unterminated string.");
             return;
         }
 
         // The closing ".
-        advance();
+        current++;
 
         // Trim the surrounding quotes.
         String value = source.substring(start + 1, current - 1);
         addToken(TokenType.STRING, value);
     }
-    private char peek() {
-        if (isAtEnd()) return '\0';
+    private char getCurrentChar() {
+        if (isEOF()) return '\0';
         return source.charAt(current);
     }
 
     private boolean match(char expected) {
-        if (isAtEnd()) return false;
-        if (source.charAt(current) != expected) return false;
+        if (isEOF()) return false;
+//        if (source.charAt(current) != expected) return false;
+        if (getCurrentChar() != expected) return false;
 
         current++;
         return true;
     }
-    private char advance() {
-        return source.charAt(current++);
-    }
-
     private void addToken(TokenType type) {
         addToken(type, null);
     }
@@ -161,13 +159,13 @@ class Scanner {
     private boolean isDigit(char c) {
         return c >= '0' && c <= '9';
     }
-    private boolean isAlpha(char c) {
+    private boolean isLetter(char c) {
         return (c >= 'a' && c <= 'z') ||
                 (c >= 'A' && c <= 'Z') ||
                 c == '_';
     }
 
-    private boolean isAlphaNumeric(char c) {
-        return isAlpha(c) || isDigit(c);
+    private boolean isLetterNumeric(char c) {
+        return isLetter(c) || isDigit(c);
     }
 }
