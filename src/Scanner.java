@@ -6,11 +6,15 @@ import java.util.Map;
 public
 class Scanner {
     private final String source;
+
+    private final List<String> sourceLines;
     private final List<Token> tokens = new ArrayList<>();
     private int start = 0;
     private int current = 0;
     private char currentChar;
     private int line = 1;
+
+    private int currentLevelOfNesting = 0;
 
     private static final Map<String, TokenType> keywords = Map.of(
             "and", TokenType.AND,
@@ -21,7 +25,8 @@ class Scanner {
     );
 
     Scanner(String source) {
-        this.source = source;
+        this.sourceLines = List.of(source.split("\n"));
+        this.source = sourceLines.get(0);
     }
 
     public List<Token> scanTokens() {;
@@ -41,6 +46,7 @@ class Scanner {
 
     private void scanToken() {
         char c = getCurrentChar();
+        String currentLine = getCurrentLine();
         current++;
         currentChar = c;
         switch (c) {
@@ -69,8 +75,8 @@ class Scanner {
 //                break;
             case ' ':
             case '\r':
-            case '\t':                // Ignore whitespace.                break;
-            case '\n':  line++; break;
+            case '\t':  break;              // Ignore whitespace.
+            case '\n': addToken(TokenType.NEW_LINE);  line++; break;
             case '"': string(); break;
             default:
                 if (isDigit(c)) {
@@ -81,6 +87,10 @@ class Scanner {
                     System.err.println(line + "Unexpected character.");
                 }
         }
+    }
+
+    private String getCurrentLine(){
+        return source.substring(current, source.indexOf('\n', current));
     }
     private void processAlphabetic() {
         while (isLetterNumeric(getCurrentChar()))

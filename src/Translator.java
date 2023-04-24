@@ -29,6 +29,8 @@ public class Translator {
     }
 
     private static void run(String source) {
+        List<String> sources = List.of(source.split("\n"));
+        System.out.println(sources);
         Scanner scanner = new Scanner(source);
         List<Token> tokens = scanner.scanTokens();
 
