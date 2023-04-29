@@ -2,7 +2,7 @@ package lexical;
 
 public enum TokenType {
     // Single-character tokens.
-    LEFT_PARENTHESIS, RIGHT_PARENTHESIS, LEFT_BRACE, RIGHT_BRACE,
+    LEFT_PARENTHESIS, RIGHT_PARENTHESIS,
     COMMA, DOT, MINUS, PLUS, SEMICOLON, SLASH, STAR, COLON,
 
     NEW_LINE,

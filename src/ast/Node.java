@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Node {
     ASTNodeType nodeType;
-//    String value;
+    //    String value;
     Token token;
     List<Node> children;
 
@@ -36,11 +36,16 @@ public class Node {
 
     @Override
     public String toString() {
+        return this.toString(0);
+    }
+
+    public String toString(int spaceCount) {
+        String childrenNode = " ".repeat(spaceCount) + this.children.toString(1);
         return "Node{" +
                 "nodeType=" + nodeType +
 //                ", value='" + value + '\'' +
                 ", token=" + token +
-                ", children=" + children +
+                ", \nchildren=" + children +
                 '}';
     }
 }
