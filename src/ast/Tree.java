@@ -70,10 +70,20 @@ public class Tree {
                                 Node conditionLoop = new Node(ASTNodeType.LOOP_CONDITION);
                                 conditionLoop.children.add(new Node(ASTNodeType.IDENTIFIER, loopVarToken));
                                 conditionLoop.children.add(new Node(ASTNodeType.IDENTIFIER, curToken));
+                                initionLoop.children.add(conditionLoop);
                                 curToken = onelineTokens.get(KW_RIGHT_RANGE_BRACE);
                                 if (curToken.getType() == TokenType.RIGHT_BRACE) {
                                     curToken = onelineTokens.get(KW_COLON_POSITION);
                                     if (curToken.getType() == TokenType.COLON) {
+                                        Node stepLoopNode = new Node(ASTNodeType.LOOP_STEP);
+                                        Node assignStepNode = new Node(ASTNodeType.ASSIGNMENT);
+                                        Node plusOneNode = new Node(ASTNodeType.BINOP);
+                                        plusOneNode.children.add(new Node(ASTNodeType.IDENTIFIER, loopVarToken));
+                                        plusOneNode.children.add(new Node(ASTNodeType.IDENTIFIER,
+                                                new Token(TokenType.IDENTIFIER, "1", "1", loopVarToken.getLine(), loopVarToken.getLevelNesting())));
+                                        assignStepNode.children.add(new Node(ASTNodeType.IDENTIFIER, loopVarToken));
+                                        assignStepNode.children.add(plusOneNode);
+                                        stepLoopNode.children.add(assignStepNode);
                                     } else {
                                         errors.add(new ASTError(curToken, "нет правой скобки у оператора range в цикле", curToken.getLine()));
                                     }
