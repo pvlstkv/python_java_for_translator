@@ -36,16 +36,46 @@ public class Node {
 
     @Override
     public String toString() {
-        return this.toString(0);
-    }
-
-    public String toString(int spaceCount) {
-        String childrenNode = " ".repeat(spaceCount) + this.children.toString(1);
         return "Node{" +
                 "nodeType=" + nodeType +
 //                ", value='" + value + '\'' +
                 ", token=" + token +
-                ", \nchildren=" + children +
+//                ", children=" + children +
                 '}';
     }
+
+    public void printTree() {
+        printTree("", this);
+    }
+
+    private void printTree(String prefix, Node node) {
+        System.out.println(prefix + "└── " + node.toString());
+        for (int i = 0; i < node.children.size() - 1; i++) {
+            Node child = node.children.get(i);
+            printTree(prefix + "    ├── ", child);
+        }
+        if (node.children.size() > 0) {
+            Node child = node.children.get(node.children.size() - 1);
+            printTree(prefix + "    └── ", child);
+        }
+    }
+
+//    public void printBeautyTree(Node node, int depth) {
+//        if (node == null) {
+//            return;
+//        }
+//
+//        // Print the current node
+//        for (int i = 0; i < depth; i++) {
+//            System.out.print("  ");
+//        }
+//        System.out.println(node);
+//
+//        // Recursively print the children
+//        if (node.children != null) {
+//            for (Node child : node.children) {
+//                printBeautyTree(child, depth + 1);
+//            }
+//        }
+//    }
 }

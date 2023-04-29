@@ -108,7 +108,7 @@ public class Tree {
             }
 
         }
-        System.out.println(wholeCode.toString());
+        wholeCode.printTree();
         System.out.println();
         System.out.println(errors);
     }
