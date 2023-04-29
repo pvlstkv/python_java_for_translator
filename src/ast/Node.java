@@ -59,23 +59,4 @@ public class Node {
             printTree(prefix + "    └── ", child);
         }
     }
-
-//    public void printBeautyTree(Node node, int depth) {
-//        if (node == null) {
-//            return;
-//        }
-//
-//        // Print the current node
-//        for (int i = 0; i < depth; i++) {
-//            System.out.print("  ");
-//        }
-//        System.out.println(node);
-//
-//        // Recursively print the children
-//        if (node.children != null) {
-//            for (Node child : node.children) {
-//                printBeautyTree(child, depth + 1);
-//            }
-//        }
-//    }
 }

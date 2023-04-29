@@ -3,20 +3,16 @@ package ast;
 import lexical.Token;
 import lexical.TokenType;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
+
+import static ast.ForKWPosition.*;
 
 public class Tree {
 
     //    private static int[] loopKW = {KW_LOOPVAR_POSITION,}
-    private static final int KW_LOOPVAR_POSITION = 1;
-    private static final int KW_IN_POSITION = 2;
-    private static final int KW_RANGE_POSITION = 3;
-    private static final int KW_LEFT_RANGE_BRACE = 4;
-    private static final int KW_RIGHT_RANGE_BRACE = 6;
-    private static final int KW_COLON_POSITION = 7;
+
+
+//    private static Map
     private static final int RIGHT_PART_POSITION = 2;
 
 
@@ -49,7 +45,7 @@ public class Tree {
             } else if (t.getType() == TokenType.FOR) {
                 Node rootNode = new Node(ASTNodeType.LOOP);
                 wholeCode.children.add(rootNode);
-                Token curToken = onelineTokens.get(KW_LOOPVAR_POSITION);
+                Token curToken = onelineTokens.get(KW_LOOPVAR_POSITION.getValue());
                 Token loopVarToken = curToken;
                 if (curToken.getType() == TokenType.IDENTIFIER) {
                     Node initionLoopNode = new Node(ASTNodeType.LOOP_INIT);
@@ -63,19 +59,19 @@ public class Tree {
                     initionLoopNode.children.add(initAssign);
                     rootNode.children.add(initionLoopNode);
 
-                    curToken = onelineTokens.get(KW_IN_POSITION);
+                    curToken = onelineTokens.get(KW_IN_POSITION.getValue());
                     if (curToken.getType() == TokenType.IN) {
-                        curToken = onelineTokens.get(KW_RANGE_POSITION);
+                        curToken = onelineTokens.get(KW_RANGE_POSITION.getValue());
                         if (curToken.getType() == TokenType.RANGE) {
-                            curToken = onelineTokens.get(KW_LEFT_RANGE_BRACE);
+                            curToken = onelineTokens.get(KW_LEFT_RANGE_BRACE.getValue());
                             if (curToken.getType() == TokenType.LEFT_PARENTHESIS) {
                                 Node conditionLoopNode = new Node(ASTNodeType.LOOP_CONDITION);
                                 conditionLoopNode.children.add(new Node(ASTNodeType.IDENTIFIER, loopVarToken));
                                 conditionLoopNode.children.add(new Node(ASTNodeType.IDENTIFIER, curToken));
                                 rootNode.children.add(conditionLoopNode);
-                                curToken = onelineTokens.get(KW_RIGHT_RANGE_BRACE);
+                                curToken = onelineTokens.get(KW_RIGHT_RANGE_BRACE.getValue());
                                 if (curToken.getType() == TokenType.RIGHT_PARENTHESIS) {
-                                    curToken = onelineTokens.get(KW_COLON_POSITION);
+                                    curToken = onelineTokens.get(KW_COLON_POSITION.getValue());
                                     if (curToken.getType() == TokenType.COLON) {
                                         Node stepLoopNode = new Node(ASTNodeType.LOOP_STEP);
                                         Node assignStepNode = new Node(ASTNodeType.ASSIGNMENT);
