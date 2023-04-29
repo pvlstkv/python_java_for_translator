@@ -1,0 +1,49 @@
+IDENTIFIER 'a', level nesting: 0
+ASSIGNMENT '=', level nesting: 0
+NUMBER_INT '5', level nesting: 0
+PLUS '+', level nesting: 0
+NUMBER_INT '8', level nesting: 0
+STAR '*', level nesting: 0
+NUMBER_INT '2', level nesting: 0
+NEW_LINE '\n', level nesting: 0
+COMMENT_START '#', level nesting: 0
+COMMENT ' this is a comment
+', level nesting: 0
+IDENTIFIER 'b', level nesting: 0
+ASSIGNMENT '=', level nesting: 0
+STRING '"Hello world"', level nesting: 0
+NEW_LINE '\n', level nesting: 0
+IDENTIFIER 'c', level nesting: 0
+ASSIGNMENT '=', level nesting: 0
+NUMBER_DOUBLE '8.0', level nesting: 0
+NEW_LINE '\n', level nesting: 0
+FOR 'for', level nesting: 0
+IDENTIFIER 'i', level nesting: 0
+IDENTIFIER 'in', level nesting: 0
+RANGE 'range', level nesting: 0
+LEFT_PARENTHESIS '(', level nesting: 0
+NUMBER_INT '3', level nesting: 0
+RIGHT_PARENTHESIS ')', level nesting: 0
+COLON ':', level nesting: 0
+NEW_LINE '\n', level nesting: 0
+PRINT 'print', level nesting: 1
+LEFT_PARENTHESIS '(', level nesting: 1
+STRING '"hi"', level nesting: 1
+RIGHT_PARENTHESIS ')', level nesting: 1
+NEW_LINE '\n', level nesting: 1
+FOR 'for', level nesting: 1
+IDENTIFIER 'j', level nesting: 1
+IDENTIFIER 'in', level nesting: 1
+RANGE 'range', level nesting: 1
+LEFT_PARENTHESIS '(', level nesting: 1
+NUMBER_INT '2', level nesting: 1
+RIGHT_PARENTHESIS ')', level nesting: 1
+COLON ':', level nesting: 1
+NEW_LINE '\n', level nesting: 1
+PRINT 'print', level nesting: 2
+LEFT_PARENTHESIS '(', level nesting: 2
+IDENTIFIER 'j', level nesting: 2
+RIGHT_PARENTHESIS ')', level nesting: 2
+NEW_LINE '\n', level nesting: 2
+EOF '', level nesting: 2
+No errors
