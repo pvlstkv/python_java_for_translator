@@ -5,6 +5,7 @@ public enum ForKWPosition {
     KW_IN_POSITION(2),
     KW_RANGE_POSITION(3),
     KW_LEFT_RANGE_BRACE(4),
+    KW_RANGE_VAL_POSITION(5),
     KW_RIGHT_RANGE_BRACE(6),
     KW_COLON_POSITION(7);
 

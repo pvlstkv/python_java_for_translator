@@ -9,104 +9,140 @@ import static ast.ForKWPosition.*;
 
 public class Tree {
 
-    //    private static int[] loopKW = {KW_LOOPVAR_POSITION,}
-
-
-//    private static Map
     private static final int RIGHT_PART_POSITION = 2;
-
-
     List<Node> nodes;
 
+    private static int handlingLineNumber = 0;
+    private static int curLvlNesting = 0;
+    private List<List<Token>> allTokens;
+
+    List<ASTError> errors = new ArrayList<>();
+
+
     public Tree(List<List<Token>> allTokens) {
-        makeAST(allTokens);
+        this.allTokens = allTokens;
+        try {
+            makeAST(allTokens).printTree();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
-    private void makeAST(List<List<Token>> allTokens) {
-
-        List<ASTError> errors = new ArrayList<>();
+    private Node makeAST(List<List<Token>> allTokens) throws Exception {
         Node wholeCode = new Node();
-        for (List<Token> onelineTokens : allTokens) {
-
+        while (handlingLineNumber < allTokens.size()) {
+            List<Token> onelineTokens = allTokens.get(handlingLineNumber);
             Token t = onelineTokens.get(0);
+            if (t.getLevelNesting() < curLvlNesting) {
+                curLvlNesting--;
+                return wholeCode;
+            }
             if (t.getType() == TokenType.IDENTIFIER) {
-                Node root = null;
-                try {
-                    root = getAssignmentNode(onelineTokens, 1); //new Node(ASTNodeType.ASSIGNMENT, onelineTokens.get(1))
-                } catch (NoAssignmentTokenException e) {
-                    errors.add(new ASTError(onelineTokens.get(1), "Нет оператора присаивания", onelineTokens.get(1).getLine()));
-                    continue;
-                }
-
-                wholeCode.children = new ArrayList<>(List.of(root));
-                Node id = new Node(ASTNodeType.IDENTIFIER, t);
-                Node right = getRightSubTree(onelineTokens, RIGHT_PART_POSITION);
-                root.children = new ArrayList<>(Arrays.asList(id, right));
+                wholeCode.children.add(handleAssignment(errors, wholeCode, onelineTokens, t));
+                handlingLineNumber++;
             } else if (t.getType() == TokenType.FOR) {
-                Node rootNode = new Node(ASTNodeType.LOOP);
-                wholeCode.children.add(rootNode);
-                Token curToken = onelineTokens.get(KW_LOOPVAR_POSITION.getValue());
-                Token loopVarToken = curToken;
-                if (curToken.getType() == TokenType.IDENTIFIER) {
-                    Node initionLoopNode = new Node(ASTNodeType.LOOP_INIT);
+                Node forNode = handleForLoop(errors, onelineTokens);
+                wholeCode.children.add(forNode);
+                // todo check the next line is nested and etc
+                if (handlingLineNumber + 1 < allTokens.size()) {
+                    curLvlNesting = allTokens.get(handlingLineNumber).get(0).getLevelNesting();
+                    handlingLineNumber++;
+                    List<List<Token>> nextLine = Collections.singletonList(allTokens.get(handlingLineNumber));
+                    int nextLineLvlNesting = nextLine.get(0).get(0).getLevelNesting();
+                    if (nextLineLvlNesting == curLvlNesting + 1) {
+                        curLvlNesting++;
+                        Node forBodyNode = makeAST((allTokens));
+                        forBodyNode.nodeType = ASTNodeType.LOOP_BODY;
+                        forNode.children.add(forBodyNode);
+                    } else throw new Exception("incorrect nesting level at " + nextLine.get(0).get(0).getLine());
 
-                    Node initAssign = new Node(ASTNodeType.ASSIGNMENT);
-                    initAssign.children.add(new Node(ASTNodeType.IDENTIFIER,
-                            curToken));
-                    initAssign.children.add(new Node(ASTNodeType.IDENTIFIER,
-                            new Token(TokenType.NUMBER_INT, "0", "0", curToken.getLine(), curToken.getLevelNesting())));
-
-                    initionLoopNode.children.add(initAssign);
-                    rootNode.children.add(initionLoopNode);
-
-                    curToken = onelineTokens.get(KW_IN_POSITION.getValue());
-                    if (curToken.getType() == TokenType.IN) {
-                        curToken = onelineTokens.get(KW_RANGE_POSITION.getValue());
-                        if (curToken.getType() == TokenType.RANGE) {
-                            curToken = onelineTokens.get(KW_LEFT_RANGE_BRACE.getValue());
-                            if (curToken.getType() == TokenType.LEFT_PARENTHESIS) {
-                                Node conditionLoopNode = new Node(ASTNodeType.LOOP_CONDITION);
-                                conditionLoopNode.children.add(new Node(ASTNodeType.IDENTIFIER, loopVarToken));
-                                conditionLoopNode.children.add(new Node(ASTNodeType.IDENTIFIER, curToken));
-                                rootNode.children.add(conditionLoopNode);
-                                curToken = onelineTokens.get(KW_RIGHT_RANGE_BRACE.getValue());
-                                if (curToken.getType() == TokenType.RIGHT_PARENTHESIS) {
-                                    curToken = onelineTokens.get(KW_COLON_POSITION.getValue());
-                                    if (curToken.getType() == TokenType.COLON) {
-                                        Node stepLoopNode = new Node(ASTNodeType.LOOP_STEP);
-                                        Node assignStepNode = new Node(ASTNodeType.ASSIGNMENT);
-                                        Node plusOneNode = new Node(ASTNodeType.BINOP, new Token(TokenType.PLUS, "+", "+", curToken.getLine(), curToken.getLevelNesting()));
-                                        plusOneNode.children.add(new Node(ASTNodeType.IDENTIFIER, loopVarToken));
-                                        plusOneNode.children.add(new Node(ASTNodeType.IDENTIFIER,
-                                                new Token(TokenType.IDENTIFIER, "1", "1", loopVarToken.getLine(), loopVarToken.getLevelNesting())));
-                                        assignStepNode.children.add(new Node(ASTNodeType.IDENTIFIER, loopVarToken));
-                                        assignStepNode.children.add(plusOneNode);
-                                        stepLoopNode.children.add(assignStepNode);
-                                        rootNode.children.add(stepLoopNode);
-                                    } else {
-                                        errors.add(new ASTError(curToken, "нет правой скобки у оператора range в цикле", curToken.getLine()));
-                                    }
-                                } else {
-                                    errors.add(new ASTError(curToken, "нет правой скобки у оператора range в цикле", curToken.getLine()));
-                                }
-                            } else {
-                                errors.add(new ASTError(curToken, "нет левой скобки у оператора range в цикле", curToken.getLine()));
-                            }
-                        } else {
-                            errors.add(new ASTError(curToken, "нет оператора range в цикле", curToken.getLine()));
-                        }
-                    } else {
-                        errors.add(new ASTError(curToken, "нет оператора in в цикле", curToken.getLine()));
-                    }
-                } else {
-                    errors.add(new ASTError(onelineTokens.get(1), "после ключевого слова for должен быть идентификатор", onelineTokens.get(1).getLine()));
                 }
+
+            } else if (t.getType() == TokenType.COMMENT_START) {
+                Token commentToken = onelineTokens.get(1);
+                handlingLineNumber++;
+                wholeCode.children.add(new Node(ASTNodeType.COMMENT, commentToken));
             }
 
         }
-        wholeCode.printTree();
-        System.out.println();
-        System.out.println(errors);
+        return wholeCode;
+    }
+
+    private Node handleForLoop(List<ASTError> errors, List<Token> onelineTokens) {
+        Node rootNode = new Node(ASTNodeType.LOOP);
+        Token curToken = onelineTokens.get(KW_LOOPVAR_POSITION.getValue());
+        Token loopVarToken = curToken;
+        if (curToken.getType() == TokenType.IDENTIFIER) {
+            Node initionLoopNode = new Node(ASTNodeType.LOOP_INIT);
+
+            Node initAssign = new Node(ASTNodeType.ASSIGNMENT);
+            initAssign.children.add(new Node(ASTNodeType.IDENTIFIER,
+                    curToken));
+            initAssign.children.add(new Node(ASTNodeType.IDENTIFIER,
+                    new Token(TokenType.NUMBER_INT, "0", "0", curToken.getLine(), curToken.getLevelNesting())));
+
+            initionLoopNode.children.add(initAssign);
+            rootNode.children.add(initionLoopNode);
+
+            curToken = onelineTokens.get(KW_IN_POSITION.getValue());
+            if (curToken.getType() == TokenType.IN) {
+                curToken = onelineTokens.get(KW_RANGE_POSITION.getValue());
+                if (curToken.getType() == TokenType.RANGE) {
+                    curToken = onelineTokens.get(KW_LEFT_RANGE_BRACE.getValue());
+                    if (curToken.getType() == TokenType.LEFT_PARENTHESIS) {
+                        Node conditionLoopNode = new Node(ASTNodeType.LOOP_CONDITION);
+                        conditionLoopNode.children.add(new Node(ASTNodeType.IDENTIFIER, loopVarToken));
+                        Token borederLoopToken = onelineTokens.get(KW_RANGE_VAL_POSITION.getValue());
+                        conditionLoopNode.children.add(new Node(ASTNodeType.IDENTIFIER, borederLoopToken));
+                        rootNode.children.add(conditionLoopNode);
+                        curToken = onelineTokens.get(KW_RIGHT_RANGE_BRACE.getValue());
+                        if (curToken.getType() == TokenType.RIGHT_PARENTHESIS) {
+                            curToken = onelineTokens.get(KW_COLON_POSITION.getValue());
+                            if (curToken.getType() == TokenType.COLON) {
+                                Node stepLoopNode = new Node(ASTNodeType.LOOP_STEP);
+                                Node assignStepNode = new Node(ASTNodeType.ASSIGNMENT);
+                                Node plusOneNode = new Node(ASTNodeType.BINOP, new Token(TokenType.PLUS, "+", "+", curToken.getLine(), curToken.getLevelNesting()));
+                                plusOneNode.children.add(new Node(ASTNodeType.IDENTIFIER, loopVarToken));
+                                plusOneNode.children.add(new Node(ASTNodeType.IDENTIFIER,
+                                        new Token(TokenType.IDENTIFIER, "1", "1", loopVarToken.getLine(), loopVarToken.getLevelNesting())));
+                                assignStepNode.children.add(new Node(ASTNodeType.IDENTIFIER, loopVarToken));
+                                assignStepNode.children.add(plusOneNode);
+                                stepLoopNode.children.add(assignStepNode);
+                                rootNode.children.add(stepLoopNode);
+                            } else {
+                                errors.add(new ASTError(curToken, "нет правой скобки у оператора range в цикле", curToken.getLine()));
+                            }
+                        } else {
+                            errors.add(new ASTError(curToken, "нет правой скобки у оператора range в цикле", curToken.getLine()));
+                        }
+                    } else {
+                        errors.add(new ASTError(curToken, "нет левой скобки у оператора range в цикле", curToken.getLine()));
+                    }
+                } else {
+                    errors.add(new ASTError(curToken, "нет оператора range в цикле", curToken.getLine()));
+                }
+            } else {
+                errors.add(new ASTError(curToken, "нет оператора in в цикле", curToken.getLine()));
+            }
+        } else {
+            errors.add(new ASTError(onelineTokens.get(1), "после ключевого слова for должен быть идентификатор", onelineTokens.get(1).getLine()));
+        }
+        return rootNode;
+    }
+
+    private Node handleAssignment(List<ASTError> errors, Node wholeCode, List<Token> onelineTokens, Token t) {
+        Node root = null;
+        try {
+            root = getAssignmentNode(onelineTokens, 1); //new Node(ASTNodeType.ASSIGNMENT, onelineTokens.get(1))
+        } catch (NoAssignmentTokenException e) {
+            errors.add(new ASTError(onelineTokens.get(1), "Нет оператора присаивания", onelineTokens.get(1).getLine()));
+            return null;
+        }
+
+        Node id = new Node(ASTNodeType.IDENTIFIER, t);
+        Node right = getRightSubTree(onelineTokens, RIGHT_PART_POSITION);
+        root.children = new ArrayList<>(Arrays.asList(id, right));
+        return root;
     }
 
     private Node getAssignmentNode(List<Token> onelineTokens, int i) throws NoAssignmentTokenException {
