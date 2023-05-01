@@ -1,8 +1,8 @@
-package lexical;
-
 import ast.Node;
 import ast.Tree;
 import code_generation.Generator;
+import lexical.LexicalAnalysisResult;
+import lexical.Scanner;
 import semantic.VarTable;
 
 import java.io.BufferedReader;
@@ -11,7 +11,6 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 
 public class Translator {
     public static void main(String[] args) throws IOException {
@@ -58,6 +57,8 @@ public class Translator {
             Generator g = new Generator(LAResults.getTokens());
             g.translate(ast);
             g.printJavaCode();
+
+            g.printCodeToFile(g.className);
 
         } catch (Exception e) {
             e.printStackTrace();

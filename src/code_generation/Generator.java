@@ -5,6 +5,9 @@ import ast.Node;
 import lexical.Token;
 import lexical.TokenType;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,7 +18,7 @@ public class Generator {
     private int curLine = 0;
 
     private List<List<Token>> allTokens;
-    String className = "Translated";
+    public String className = "Translated";
     public Generator(List<List<Token>> allTokens) {
         this.allTokens = allTokens;
     }
@@ -33,6 +36,18 @@ public class Generator {
         return javaCode;
     }
 
+    public void printCodeToFile(String fileName) {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("src/"+fileName + ".java"));
+            for (String str : this.javaCode) {
+                writer.write(str);
+                writer.newLine();
+            }
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     private void generate(String prefix, Node root) {
         if (root == null) {
             return;

@@ -47,7 +47,6 @@ public class Tree {
             } else if (t.getType() == TokenType.FOR) {
                 Node forNode = handleForLoop(errors, onelineTokens);
                 wholeCode.children.add(forNode);
-                // todo check the next line is nested and etc
                 if (handlingLineNumber + 1 < allTokens.size()) {
                     curLvlNesting = allTokens.get(handlingLineNumber).get(0).getLevelNesting();
                     handlingLineNumber++;
@@ -59,7 +58,6 @@ public class Tree {
                         forBodyNode.nodeType = ASTNodeType.LOOP_BODY;
                         forNode.children.add(forBodyNode);
                     } else throw new Exception("incorrect nesting level at " + nextLine.get(0).get(0).getLine());
-
                 }
 
             } else if (t.getType() == TokenType.COMMENT_START) {

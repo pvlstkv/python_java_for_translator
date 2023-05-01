@@ -24,15 +24,12 @@ public class Scanner {
     private int currentLevelOfNesting = 0;
 
     private static final Map<String, TokenType> keywords = Map.of(
-//            "and", TokenType.AND,
-//            "or", TokenType.OR,
             "for", TokenType.FOR,
             "in", TokenType.IN,
-            "print", TokenType.PRINT,
             "range", TokenType.RANGE
     );
 
-    Scanner(String source) {
+    public Scanner(String source) {
         this.sourceLines = Stream.of(source.split("\n")).map(str -> str + "\n").collect(Collectors.toList());
     }
 
