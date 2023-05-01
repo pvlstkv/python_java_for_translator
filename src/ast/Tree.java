@@ -73,9 +73,9 @@ public class Tree {
     }
 
     private Node handleForLoop(List<ASTError> errors, List<Token> onelineTokens) {
-        Node rootNode = new Node(ASTNodeType.LOOP);
         Token curToken = onelineTokens.get(KW_LOOPVAR_POSITION.getValue());
         Token loopVarToken = curToken;
+        Node rootNode = new Node(ASTNodeType.LOOP, curToken.getLine());
         if (curToken.getType() == TokenType.IDENTIFIER) {
             Node initionLoopNode = new Node(ASTNodeType.LOOP_INIT);
 

@@ -1,5 +1,9 @@
 package lexical;
 
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.Set;
+
 public enum TokenType {
     // Single-character tokens.
     LEFT_PARENTHESIS, RIGHT_PARENTHESIS,
@@ -25,6 +29,10 @@ public enum TokenType {
 
     // comment
     COMMENT_START, COMMENT,
+    MATH_EXPRESSION, MATH_RESULT,
+    EOF;
 
-    EOF
+    public static boolean isMathOp(TokenType type){
+        return type == PLUS || type == MINUS || type == STAR || type == SLASH;
+    }
 }

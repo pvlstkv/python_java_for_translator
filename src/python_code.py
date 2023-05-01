@@ -1,6 +1,7 @@
 a = 6 + 8
 hello_world = "hello world!"
-for i in range(a):
+q = 8
+for i in range(q):
     for j in range(2):
         b = 7.0
         b2 = 1000

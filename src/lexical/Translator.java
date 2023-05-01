@@ -2,6 +2,7 @@ package lexical;
 
 import ast.Node;
 import ast.Tree;
+import code_generation.Generator;
 import semantic.VarTable;
 
 import java.io.BufferedReader;
@@ -53,6 +54,10 @@ public class Translator {
             VarTable varTable = new VarTable(ast);
             varTable.printVarTable();
             varTable.printErrors();
+
+            Generator g = new Generator(LAResults.getTokens());
+            g.translate(ast);
+            g.printJavaCode();
 
         } catch (Exception e) {
             e.printStackTrace();

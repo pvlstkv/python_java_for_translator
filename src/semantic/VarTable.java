@@ -44,6 +44,10 @@ public class VarTable {
                 String varName = child.children.get(0).token.getLexeme();
                 TokenType type = child.children.get(1).token.getType();
                 String varValue = child.children.get(1).token.getLexeme();
+                if (TokenType.isMathOp(type)){
+                    type = TokenType.MATH_RESULT;
+                    varValue = TokenType.MATH_EXPRESSION.toString();
+                }
                 rows.add(new Row(varName, type, varValue));
             } else if (child.nodeType == ASTNodeType.LOOP) {
                 addLoopVar(child);

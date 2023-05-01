@@ -7,10 +7,15 @@ import java.util.List;
 
 public class Node {
     public  ASTNodeType nodeType;
-    //    String value;
     public  Token token;
+    public int lineNumber;
     public List<Node> children;
 
+    public Node(ASTNodeType nodeType, int lineNumber) {
+        this.nodeType = nodeType;
+        this.lineNumber = lineNumber;
+        children = new ArrayList<>();
+    }
 
     public Node(ASTNodeType nodeType) {
         this.nodeType = nodeType;
@@ -21,31 +26,35 @@ public class Node {
         this.nodeType = nodeType;
         this.token = token;
         this.children = new ArrayList<>();
+        this.lineNumber = token.getLine();
     }
 
     public Node() {
         this.children = new ArrayList<>();
     }
 
-    public Node(ASTNodeType nodeType, String value, Token token, List<Node> children) {
+    public Node(ASTNodeType nodeType, Token token, List<Node> children) {
         this.nodeType = nodeType;
-//        this.value = value;
         this.token = token;
         this.children = children;
+        this.lineNumber = token.getLine();
     }
 
     @Override
     public String toString() {
         return "Node{" +
                 "nodeType=" + nodeType +
-//                ", value='" + value + '\'' +
                 ", token=" + token +
-//                ", children=" + children +
                 '}';
     }
 
     public void printTree() {
         printTree("", this);
+    }
+
+
+    public int getLineNumber() {
+        return lineNumber;
     }
 
     private void printTree(String prefix, Node node) {
