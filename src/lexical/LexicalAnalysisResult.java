@@ -11,6 +11,19 @@ public class LexicalAnalysisResult {
         this.errors = errors;
     }
 
+  public void printAllTokens(){
+        tokens.forEach(System.out::println);
+  }
+
+  public void printErrors(){
+        if (errors.size() > 0){
+            System.out.println("There are errors of lexical analyse");
+            errors.forEach(System.out::println);
+        }else{
+            System.out.println("There aren't any errors of lexical analyse");
+        }
+  }
+
     public List<List<Token>> getTokens() {
         return tokens;
     }

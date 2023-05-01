@@ -21,10 +21,14 @@ public class Tree {
 
     public Tree(List<List<Token>> allTokens) {
         this.allTokens = allTokens;
+    }
+
+    public Node buildAST() throws Exception {
         try {
-            makeAST(allTokens).printTree();
+            return makeAST(allTokens);
         } catch (Exception e) {
             System.out.println(e);
+            throw new Exception("Cannot create AST");
         }
     }
 
@@ -144,7 +148,14 @@ public class Tree {
         root.children = new ArrayList<>(Arrays.asList(id, right));
         return root;
     }
-
+public void printASTErrors(){
+        if (errors.size() > 0){
+            System.out.println("There are errors of syntax analysis at building AST");
+            errors.forEach(System.out::println);
+        }else{
+            System.out.println("There aren't any errors of syntax analysis at building AST");
+        }
+}
     private Node getAssignmentNode(List<Token> onelineTokens, int i) throws NoAssignmentTokenException {
         Token t = onelineTokens.get(i);
         if (t.getType().equals(TokenType.ASSIGNMENT))

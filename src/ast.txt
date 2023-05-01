@@ -1,0 +1,67 @@
+No errors
+└── Node{nodeType=null, token=null}
+    ├── └── Node{nodeType=ASSIGNMENT, token=ASSIGNMENT '=' level nesting: 0}
+    ├──     ├── └── Node{nodeType=IDENTIFIER, token=IDENTIFIER 'a' level nesting: 0}
+    ├──     └── └── Node{nodeType=IDENTIFIER, token=NUMBER_INT '6' level nesting: 0}
+    ├── └── Node{nodeType=LOOP, token=null}
+    ├──     ├── └── Node{nodeType=LOOP_INIT, token=null}
+    ├──     ├──     └── └── Node{nodeType=ASSIGNMENT, token=null}
+    ├──     ├──     └──     ├── └── Node{nodeType=IDENTIFIER, token=IDENTIFIER 'i' level nesting: 0}
+    ├──     ├──     └──     └── └── Node{nodeType=IDENTIFIER, token=NUMBER_INT '0' level nesting: 0}
+    ├──     ├── └── Node{nodeType=LOOP_CONDITION, token=null}
+    ├──     ├──     ├── └── Node{nodeType=IDENTIFIER, token=IDENTIFIER 'i' level nesting: 0}
+    ├──     ├──     └── └── Node{nodeType=IDENTIFIER, token=NUMBER_INT '1' level nesting: 0}
+    ├──     ├── └── Node{nodeType=LOOP_STEP, token=null}
+    ├──     ├──     └── └── Node{nodeType=ASSIGNMENT, token=null}
+    ├──     ├──     └──     ├── └── Node{nodeType=IDENTIFIER, token=IDENTIFIER 'i' level nesting: 0}
+    ├──     ├──     └──     └── └── Node{nodeType=BINOP, token=PLUS '+' level nesting: 0}
+    ├──     ├──     └──     └──     ├── └── Node{nodeType=IDENTIFIER, token=IDENTIFIER 'i' level nesting: 0}
+    ├──     ├──     └──     └──     └── └── Node{nodeType=IDENTIFIER, token=IDENTIFIER '1' level nesting: 0}
+    ├──     └── └── Node{nodeType=LOOP_BODY, token=null}
+    ├──     └──     ├── └── Node{nodeType=LOOP, token=null}
+    ├──     └──     ├──     ├── └── Node{nodeType=LOOP_INIT, token=null}
+    ├──     └──     ├──     ├──     └── └── Node{nodeType=ASSIGNMENT, token=null}
+    ├──     └──     ├──     ├──     └──     ├── └── Node{nodeType=IDENTIFIER, token=IDENTIFIER 'j' level nesting: 1}
+    ├──     └──     ├──     ├──     └──     └── └── Node{nodeType=IDENTIFIER, token=NUMBER_INT '0' level nesting: 1}
+    ├──     └──     ├──     ├── └── Node{nodeType=LOOP_CONDITION, token=null}
+    ├──     └──     ├──     ├──     ├── └── Node{nodeType=IDENTIFIER, token=IDENTIFIER 'j' level nesting: 1}
+    ├──     └──     ├──     ├──     └── └── Node{nodeType=IDENTIFIER, token=NUMBER_INT '2' level nesting: 1}
+    ├──     └──     ├──     ├── └── Node{nodeType=LOOP_STEP, token=null}
+    ├──     └──     ├──     ├──     └── └── Node{nodeType=ASSIGNMENT, token=null}
+    ├──     └──     ├──     ├──     └──     ├── └── Node{nodeType=IDENTIFIER, token=IDENTIFIER 'j' level nesting: 1}
+    ├──     └──     ├──     ├──     └──     └── └── Node{nodeType=BINOP, token=PLUS '+' level nesting: 1}
+    ├──     └──     ├──     ├──     └──     └──     ├── └── Node{nodeType=IDENTIFIER, token=IDENTIFIER 'j' level nesting: 1}
+    ├──     └──     ├──     ├──     └──     └──     └── └── Node{nodeType=IDENTIFIER, token=IDENTIFIER '1' level nesting: 1}
+    ├──     └──     ├──     └── └── Node{nodeType=LOOP_BODY, token=null}
+    ├──     └──     ├──     └──     ├── └── Node{nodeType=ASSIGNMENT, token=ASSIGNMENT '=' level nesting: 2}
+    ├──     └──     ├──     └──     ├──     ├── └── Node{nodeType=IDENTIFIER, token=IDENTIFIER 'b' level nesting: 2}
+    ├──     └──     ├──     └──     ├──     └── └── Node{nodeType=IDENTIFIER, token=NUMBER_INT '7' level nesting: 2}
+    ├──     └──     ├──     └──     └── └── Node{nodeType=ASSIGNMENT, token=ASSIGNMENT '=' level nesting: 2}
+    ├──     └──     ├──     └──     └──     ├── └── Node{nodeType=IDENTIFIER, token=IDENTIFIER 'b2' level nesting: 2}
+    ├──     └──     ├──     └──     └──     └── └── Node{nodeType=IDENTIFIER, token=NUMBER_INT '1000' level nesting: 2}
+    ├──     └──     ├── └── Node{nodeType=ASSIGNMENT, token=ASSIGNMENT '=' level nesting: 1}
+    ├──     └──     ├──     ├── └── Node{nodeType=IDENTIFIER, token=IDENTIFIER 'c' level nesting: 1}
+    ├──     └──     ├──     └── └── Node{nodeType=IDENTIFIER, token=NUMBER_INT '123' level nesting: 1}
+    ├──     └──     └── └── Node{nodeType=LOOP, token=null}
+    ├──     └──     └──     ├── └── Node{nodeType=LOOP_INIT, token=null}
+    ├──     └──     └──     ├──     └── └── Node{nodeType=ASSIGNMENT, token=null}
+    ├──     └──     └──     ├──     └──     ├── └── Node{nodeType=IDENTIFIER, token=IDENTIFIER 'k' level nesting: 1}
+    ├──     └──     └──     ├──     └──     └── └── Node{nodeType=IDENTIFIER, token=NUMBER_INT '0' level nesting: 1}
+    ├──     └──     └──     ├── └── Node{nodeType=LOOP_CONDITION, token=null}
+    ├──     └──     └──     ├──     ├── └── Node{nodeType=IDENTIFIER, token=IDENTIFIER 'k' level nesting: 1}
+    ├──     └──     └──     ├──     └── └── Node{nodeType=IDENTIFIER, token=NUMBER_INT '3' level nesting: 1}
+    ├──     └──     └──     ├── └── Node{nodeType=LOOP_STEP, token=null}
+    ├──     └──     └──     ├──     └── └── Node{nodeType=ASSIGNMENT, token=null}
+    ├──     └──     └──     ├──     └──     ├── └── Node{nodeType=IDENTIFIER, token=IDENTIFIER 'k' level nesting: 1}
+    ├──     └──     └──     ├──     └──     └── └── Node{nodeType=BINOP, token=PLUS '+' level nesting: 1}
+    ├──     └──     └──     ├──     └──     └──     ├── └── Node{nodeType=IDENTIFIER, token=IDENTIFIER 'k' level nesting: 1}
+    ├──     └──     └──     ├──     └──     └──     └── └── Node{nodeType=IDENTIFIER, token=IDENTIFIER '1' level nesting: 1}
+    ├──     └──     └──     └── └── Node{nodeType=LOOP_BODY, token=null}
+    ├──     └──     └──     └──     └── └── Node{nodeType=ASSIGNMENT, token=ASSIGNMENT '=' level nesting: 2}
+    ├──     └──     └──     └──     └──     ├── └── Node{nodeType=IDENTIFIER, token=IDENTIFIER 'c2' level nesting: 2}
+    ├──     └──     └──     └──     └──     └── └── Node{nodeType=IDENTIFIER, token=NUMBER_INT '567' level nesting: 2}
+    ├── └── Node{nodeType=ASSIGNMENT, token=ASSIGNMENT '=' level nesting: 0}
+    ├──     ├── └── Node{nodeType=IDENTIFIER, token=IDENTIFIER 'd' level nesting: 0}
+    ├──     └── └── Node{nodeType=IDENTIFIER, token=NUMBER_INT '9' level nesting: 0}
+    └── └── Node{nodeType=COMMENT, token=COMMENT ' comment
+' level nesting: 0}

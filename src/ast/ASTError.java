@@ -13,4 +13,13 @@ public class ASTError {
         this.msg = msg;
         this.lineNumber = lineNumber;
     }
+
+    @Override
+    public String toString() {
+        return "ASTError{" +
+                "token=" + token +
+                ", msg='" + msg + '\'' +
+                ", lineNumber=" + lineNumber +
+                '}';
+    }
 }

@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Node {
-    ASTNodeType nodeType;
+    public  ASTNodeType nodeType;
     //    String value;
-    Token token;
-    List<Node> children;
+    public  Token token;
+    public List<Node> children;
 
 
     public Node(ASTNodeType nodeType) {

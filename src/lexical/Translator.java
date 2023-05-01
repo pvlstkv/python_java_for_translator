@@ -1,6 +1,8 @@
 package lexical;
 
+import ast.Node;
 import ast.Tree;
+import semantic.VarTable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -34,26 +36,27 @@ public class Translator {
 
     private static void run(String source) {
         Scanner scanner = new Scanner(source);
-        LexicalAnalysisResult LAResults = scanner.scanTokens();
+        try {
+            System.out.println("lexical analyse");
+            LexicalAnalysisResult LAResults = scanner.scanTokens();
+            // print all tokens
+            LAResults.printAllTokens();
+            LAResults.printErrors();
 
-        // print all tokens
-        for (List<Token> tokenLine : LAResults.getTokens()) {
-//            for (Token token : tokenLine) {
-                System.out.println(tokenLine);
-//            }
+            System.out.println("syntax analyse");
+            Tree tree = new Tree(LAResults.getTokens());
+            Node ast = tree.buildAST();
+            tree.printASTErrors();
+            ast.printTree();
+
+            System.out.println("semantic analyse");
+            VarTable varTable = new VarTable(ast);
+            varTable.printVarTable();
+            varTable.printErrors();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        // print all errors
-        if (LAResults.getErrors().size() != 0) {
-            System.out.println("There are errors:");
-            for (Error e : LAResults.getErrors()) {
-                String s = e.toString();
-                System.out.println(s);
-            }
-        } else {
-            System.out.println("No errors");
-        }
-
-        new Tree(LAResults.getTokens());
     }
 }
