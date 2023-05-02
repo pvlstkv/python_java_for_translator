@@ -48,7 +48,7 @@ public class Scanner {
             current = 0;
             allTokens.add(currentLineToken);
         }
-        currentLineToken.add(new Token(TokenType.EOF, "", null, lineNumber, currentLevelOfNesting));
+        // currentLineToken.add(new Token(TokenType.EOF, "", null, lineNumber, currentLevelOfNesting));
         return new LexicalAnalysisResult(allTokens, errors);
     }
 
